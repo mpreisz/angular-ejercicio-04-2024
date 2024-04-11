@@ -1,0 +1,11 @@
+<div class="borde border-solid border-cyan-700 border-2 ">
+  <h3>{{ post.user }}</h3>
+  <p>{{ post.published | date : "short" }}</p>
+  <div *ngIf="showFullContent; else shortContent">
+    <p>{{ post.content }}</p>
+  </div>
+  <ng-template #shortContent>
+    <p>{{ post.content | slice : 0 : 150 }}...</p>
+  </ng-template>
+  <button (click)="ViewMoreOrLessContent()" [ngClass]="showFullContent ? 'show-less-button' : 'show-more-button'">{{ buttonText }}</button>
+</div>
