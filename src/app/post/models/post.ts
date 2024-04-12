@@ -1,5 +1,5 @@
 export interface Post {
   user: string;
-  published: Date;
+  published?: Date;
   content: string;
 }

@@ -1,0 +1,36 @@
+<h3>Formulario para crear una publicacion:</h3>
+
+<form class="estilosFormulario" [formGroup]="postForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label class="listaErrores">User</mat-label>
+
+    <input matInput type="text" required formControlName="user" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label class="listaErrores">Content</mat-label>
+
+    <input matInput type="text" required formControlName="content" />
+  </mat-form-field>
+  <ng-container *ngFor="let errors of contentErrors$ | async">
+    <li class="listaErrores">{{ errors }}</li></ng-container
+  >
+
+  <button mat-raised-button>Enviar Formulario</button>
+
+  <!--
+<form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+  <label for="user">User:</label>
+  <input class="input" type="text" id="user" formControlName="user" />
+  <small>{{ postForm.get("user")?.errors | json }}</small>
+
+  <label for="content">Content:</label>
+  <input class="input" type="text" id="content" formControlName="content" />
+  <small>{{ postForm.get("content")?.errors | json }}</small>
+  <br />
+  <button class="botonSubmit">Submit</button>
+
+   <label for="published">Publish:</label>
+  <input class="input" type="text" id="published" formControlName="published" />
+  <small>{{ postForm.get("published")?.errors | json }}</small> -->
+  <!-- </form> -->
+</form>
