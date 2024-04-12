@@ -30,7 +30,7 @@ import { Route, Router } from '@angular/router';
   styleUrl: './post-form.component.scss',
 })
 export class PostFormComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private postsService: PostsService) {}
 
   public postForm = new FormGroup({
     user: new FormControl('', [Validators.required]),
@@ -59,13 +59,13 @@ export class PostFormComponent implements OnInit {
 
   //agrego un metodo para verificar si el formulario es valido?
   public onSubmit() {
-    // if (this.postForm.invalid) return;
     const postData: Post = {
       user: '',
       content: '',
     };
     postData.user = this.postForm.get('user')!.value || '';
     postData.user = this.postForm.get('content')!.value || '';
+    this.postsService.addPost(postData);
     this.router.navigate(['posts/list']);
   }
   ngOnInit(): void {}

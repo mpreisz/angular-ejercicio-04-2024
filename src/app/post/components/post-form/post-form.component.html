@@ -1,5 +1,3 @@
-<h3>Formulario para crear una publicacion:</h3>
-
 <form class="estilosFormulario" [formGroup]="postForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="outline">
     <mat-label class="listaErrores">User</mat-label>
@@ -16,21 +14,4 @@
   >
 
   <button mat-raised-button>Enviar Formulario</button>
-
-  <!--
-<form [formGroup]="postForm" (ngSubmit)="onSubmit()">
-  <label for="user">User:</label>
-  <input class="input" type="text" id="user" formControlName="user" />
-  <small>{{ postForm.get("user")?.errors | json }}</small>
-
-  <label for="content">Content:</label>
-  <input class="input" type="text" id="content" formControlName="content" />
-  <small>{{ postForm.get("content")?.errors | json }}</small>
-  <br />
-  <button class="botonSubmit">Submit</button>
-
-   <label for="published">Publish:</label>
-  <input class="input" type="text" id="published" formControlName="published" />
-  <small>{{ postForm.get("published")?.errors | json }}</small> -->
-  <!-- </form> -->
 </form>
