@@ -9,11 +9,14 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { map } from 'rxjs';
+import { Observable, filter, map, take } from 'rxjs';
 import { Post } from '../../models/post';
 // import { Router, RouterLink } from '@angular/router';
 import { PostsService } from '../../services/posts.service';
-import { Route, Router } from '@angular/router';
+import {  Router } from '@angular/router';
+import { addPost, updatePost, } from '../../../state/post.actions';
+import { Store } from '@ngrx/store';
+import { getPostToEdit } from '../../../state/posts.selector';
 
 @Component({
   selector: 'app-post-form',
@@ -24,13 +27,23 @@ import { Route, Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    // RouterLink,
-  ],
+     ],
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.scss',
 })
 export class PostFormComponent implements OnInit {
-  constructor(private router: Router, private postsService: PostsService) {}
+   post$ : Observable<Post> = this.store.select(getPostToEdit);
+   outdatePost: Post = { user: "", content: "", published: new Date()}
+   isNewPost = true;
+
+
+
+
+  constructor(private router: Router,
+    private postsService: PostsService,
+    private store: Store
+
+    ) {}
 
   public postForm = new FormGroup({
     user: new FormControl('', [Validators.required]),
@@ -57,16 +70,33 @@ export class PostFormComponent implements OnInit {
     })
   );
 
+
+  ngOnInit() {
+    this.post$.pipe(
+    filter(x=>x.user != "" && x.content != ""),
+    take(1),
+    map(x=> {
+      this.outdatePost = x;
+      this.isNewPost = false
+    })).subscribe()
+    }
   //agrego un metodo para verificar si el formulario es valido?
   public onSubmit() {
     const postData: Post = {
       user: '',
       content: '',
+      published: new Date()
     };
     postData.user = this.postForm.get('user')!.value || '';
-    postData.user = this.postForm.get('content')!.value || '';
-    this.postsService.addPost(postData);
+    postData.content = this.postForm.get('content')!.value || '';
+    // this.postsService.addPost(postData);
+    if(this.isNewPost ){
+      this.store.dispatch(addPost({post: postData}))
+    } else{
+      this.store.dispatch(updatePost({updatePost: postData ,outdatePost: this.outdatePost }))
+    }
+
     this.router.navigate(['posts/list']);
   }
-  ngOnInit(): void {}
+
 }

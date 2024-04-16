@@ -8,4 +8,9 @@
     <p>{{ post.content | slice : 0 : 150 }}...</p>
   </ng-template>
   <button (click)="ViewMoreOrLessContent()" [ngClass]="showFullContent ? 'show-less-button' : 'show-more-button'">{{ buttonText }}</button>
+<button type="button" (click)="deletePost(post)">Borrar publicacion</button>
+<button type="button" (click)="editPost(post)">Editar</button>
+<!-- <button type="button" (click)="contador()">Contador</button> -->
+<h1>{{ postCount$ | async }}</h1>
+
 </div>

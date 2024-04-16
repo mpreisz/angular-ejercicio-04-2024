@@ -14,7 +14,7 @@ export class PostsEffects {
         this.httpClient
       .get<Post[]>(this.serviceURL)
         .pipe(map((posts)=> loadPostsSuccessfully({posts})))
-      // catchError(error => loadPostsFailure({ error }))
+
     )
   ))
   constructor(private actions$: Actions,

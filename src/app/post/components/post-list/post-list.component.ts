@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { PostComponent } from '../post/post.component';
 import { CommonModule } from '@angular/common';
-import { PostsService } from '../../services/posts.service';
 import { Store } from '@ngrx/store';
 import { loadPosts } from '../../../state/post.actions';
-import { getPosts } from '../../../state/posts.selector';
-import { Observable } from 'rxjs';
+import { getPostLoaded, getPosts } from '../../../state/posts.selector';
+import { Observable, filter, take, tap } from 'rxjs';
 import { Post } from '../../models/post';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-post-list',
   standalone: true,
@@ -16,14 +16,25 @@ import { Post } from '../../models/post';
 })
 export class PostListComponent {
   // public posts!: Post[];
-   posts$: Observable<Post[]> = this.store.select(getPosts)
+   posts$: Observable<Post[]> = this.store.select(getPosts);
+   postloaded$: Observable<boolean> = this.store.select(getPostLoaded);
 
   constructor(
     // private postService: PostsService,
-    private store: Store) {}
+    private store: Store,
+    private router: Router) {}
 
   ngOnInit() {
-    // this.posts = this.postService.allPosts;
-    this.store.dispatch(loadPosts())
+    this.postloaded$.pipe(
+      filter(x => !x),
+      take(1),
+      tap(x => {
+        this.store.dispatch(loadPosts())
+      })).subscribe();
+
   }
-}
+ createPost(){
+  this.router.navigate(["posts/create"]);
+ }
+  }
+
