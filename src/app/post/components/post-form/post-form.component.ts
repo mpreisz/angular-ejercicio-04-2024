@@ -17,6 +17,7 @@ import {  Router } from '@angular/router';
 import { addPost, updatePost, } from '../../../state/post.actions';
 import { Store } from '@ngrx/store';
 import { getPostToEdit } from '../../../state/posts.selector';
+import { PostFormComponentStore } from './post-form-component.store';
 
 @Component({
   selector: 'app-post-form',
@@ -34,14 +35,15 @@ import { getPostToEdit } from '../../../state/posts.selector';
 export class PostFormComponent implements OnInit {
    post$ : Observable<Post> = this.store.select(getPostToEdit);
    outdatePost: Post = { user: "", content: "", published: new Date()}
-   isNewPost = true;
 
+   isNewPost = true;
 
 
 
   constructor(private router: Router,
     private postsService: PostsService,
-    private store: Store
+    private store: Store,
+    private componentStore: PostFormComponentStore,
 
     ) {}
 
@@ -70,7 +72,6 @@ export class PostFormComponent implements OnInit {
     })
   );
 
-
   ngOnInit() {
     this.post$.pipe(
     filter(x=>x.user != "" && x.content != ""),
@@ -79,7 +80,13 @@ export class PostFormComponent implements OnInit {
       this.outdatePost = x;
       this.isNewPost = false
     })).subscribe()
-    }
+
+    this.postForm.valueChanges.pipe(
+      map((values) => this.componentStore.postUpdater(values))
+    ).subscribe();
+
+  }
+
   //agrego un metodo para verificar si el formulario es valido?
   public onSubmit() {
     const postData: Post = {

@@ -7,3 +7,13 @@
   </div>
   </div>
 
+
+  -is working?
+  <br/>
+  - {{ isWorkingState$ | async }}
+  <br/>
+   <mat-button-toggle-group name="isWorking">
+    <mat-button-toggle [value]="true" (click)="toggleIsWorking(true)">true</mat-button-toggle>
+    <mat-button-toggle [value]="false" (click)="toggleIsWorking(false)">false</mat-button-toggle>
+  </mat-button-toggle-group>
+
