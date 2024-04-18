@@ -31,6 +31,7 @@ import { PostFormComponentStore } from './post-form-component.store';
      ],
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.scss',
+  providers: [PostFormComponentStore]
 })
 export class PostFormComponent implements OnInit {
    post$ : Observable<Post> = this.store.select(getPostToEdit);

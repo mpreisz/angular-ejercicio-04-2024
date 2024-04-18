@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ComponentStore } from "@ngrx/component-store";
 import { Actions, ofType } from "@ngrx/effects";
 import { createAction, props, Store } from "@ngrx/store";
-import { filter, map, take, withLatestFrom } from "rxjs";
+import {  map,  withLatestFrom } from "rxjs";
 import { Post } from "../../models/post";
 import { addPost, updatePost } from "../../../state/post.actions";
 
